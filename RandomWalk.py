@@ -20,13 +20,18 @@ def plot_random_walk(ax, ax_dist, ax_percent, size, steps, bin_width=3, interval
     percent_within_1 = np.zeros(steps)
 
     # Simulate and store positions over time
+    catchdist = np.sqrt(dim)
+    distances = np.linalg.norm(x, axis=0)
     for t in range(steps):
+        if catch:
+            truth = distances > catchdist
         positions[t] = x[:]
         distances = np.linalg.norm(x, axis=0)
-        percent_within_1[t] = np.sum(distances < 1) / size * 100
+        percent_within_1[t] = np.sum(distances < catchdist) / size * 100
         x += np.random.randint(low=-1, high=2, size=(dim, size)) * truth
-        if catch:
-            truth = distances > 1
+        
+        
+        
 
     # Color map for distinct point trajectories
     cmap_3d = plt.cm.get_cmap("gist_rainbow")
